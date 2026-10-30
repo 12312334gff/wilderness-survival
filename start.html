@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>荒野余生 · 入口</title>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 50% 60%,#241a0f,#0b1114 70%);color:#eef2ea;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;padding:24px}
+  .wrap{max-width:520px;width:100%;text-align:center}
+  h1{font-size:34px;letter-spacing:.28em;margin:0 0 6px;background:linear-gradient(180deg,#fff3da,#f2b053);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:#9fb0a6;font-size:12px;letter-spacing:.3em;margin-bottom:26px}
+  .hero{font-size:54px;filter:drop-shadow(0 0 26px #ff8a2a88);margin-bottom:10px}
+  a.card{
+    display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px 18px;border-radius:16px;
+    background:#131c1a;border:1px solid #26332e;text-decoration:none;color:#eef2ea;margin-bottom:12px;transition:.18s;
+  }
+  a.card:hover{border-color:#f2b053;transform:translateY(-2px);box-shadow:0 12px 30px #0007}
+  a.card .ico{font-size:26px}
+  a.card b{display:block;font-size:16px;letter-spacing:.06em}
+  a.card span{display:block;font-size:12px;color:#8fa39a;margin-top:3px;line-height:1.6}
+  .tag{font-size:10px;border:1px solid #f2b05355;color:#f2b053;border-radius:6px;padding:2px 6px;margin-left:auto;white-space:nowrap}
+  .note{color:#5f6f68;font-size:11.5px;line-height:1.9;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">🏝️</div>
+  <h1>荒野余生</h1>
+  <div class="sub">选择你的版本</div>
+
+  <a class="card" href="./explore.html">
+    <div class="ico">🎮</div>
+    <div>
+      <b>3D 探索版</b>
+      <span>自己操控角色，在未知岛屿上走动、砍树、点火、熬过黑夜。<b style="display:inline;color:#f2b053">横屏游玩</b>。</span>
+    </div>
+    <div class="tag">新版</div>
+  </a>
+
+  <a class="card" href="./index.html">
+    <div class="ico">📋</div>
+    <div>
+      <b>2D 生存经营版</b>
+      <span>用文字与数值面板管理营地，撑过 20 天等待救援。</span>
+    </div>
+  </a>
+
+  <div class="note">
+    3D 版需要较新的浏览器（支持 WebGL2），<b style="color:#c9d6cf">请把手机横过来玩</b>。<br>
+    竖屏时会提示转屏；加到主屏幕后会自动锁横屏、全屏运行，也能离线打开。
+  </div>
+</div>
+</body>
+</html>
