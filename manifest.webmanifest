@@ -1,0 +1,18 @@
+{
+  "name": "荒野余生 · 3D 探索",
+  "short_name": "荒野余生",
+  "description": "第三人称 3D 荒野探索小游戏：自己操控角色在未知岛屿上采集、生火、熬过夜晚。横屏体验最佳。",
+  "lang": "zh-CN",
+  "start_url": "./explore.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#0b1114",
+  "theme_color": "#0b1114",
+  "icons": [
+    { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
