@@ -1,0 +1,318 @@
+/* 荒野余生 3D · 样式（手机竖屏优先） */
+:root{
+  --ink:#eef2ea;
+  --dim:#9fb0a6;
+  --amber:#f2b053;
+  --green:#7fbf7a;
+  --red:#e2685c;
+  --blue:#64b5e6;
+  --glass:rgba(10,16,18,.42);
+  --line:rgba(255,255,255,.14);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;height:100%;overflow:hidden;background:#0b1114;color:var(--ink);
+  font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  overscroll-behavior:none;touch-action:none;user-select:none;-webkit-user-select:none;
+}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+
+/* ============ 加载 ============ */
+.loading{
+  position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 70%, #2a1a0d 0%, #0b1114 62%);
+  transition:opacity .8s ease;
+}
+.loading.gone{opacity:0;pointer-events:none}
+.loading .fire{font-size:58px;filter:drop-shadow(0 0 24px #ff8a2a88);animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-7px)}}
+.loading h1{
+  font-size:30px;letter-spacing:.35em;margin:14px 0 6px;font-weight:800;
+  background:linear-gradient(180deg,#fff3da,#f2b053);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.loading .sub{color:var(--dim);font-size:12px;letter-spacing:.24em}
+
+/* ============ HUD ============ */
+.hud{position:fixed;inset:0;pointer-events:none;z-index:10;opacity:0;transition:opacity .8s .2s}
+.hud.on{opacity:1}
+
+/* 顶部状态 */
+.top{
+  position:absolute;top:max(12px,env(safe-area-inset-top));left:12px;right:12px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  pointer-events:none;
+}
+.stats{
+  display:flex;flex-direction:column;gap:7px;padding:10px 12px;border-radius:16px;
+  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  width:min(52vw,230px);
+}
+.stat{display:flex;align-items:center;gap:7px}
+.stat .icon{font-size:12px;line-height:1;width:14px;filter:drop-shadow(0 1px 2px #0008)}
+.stat .bar{
+  flex:1;height:9px;border-radius:6px;background:rgba(0,0,0,.45);overflow:hidden;
+  box-shadow:inset 0 1px 3px #0009;position:relative;
+}
+.stat .bar i{display:block;height:100%;border-radius:6px;transition:width .25s ease,background .4s}
+.stat.heart .bar{height:12px}
+.stat.heart .bar i{background:linear-gradient(90deg,#c94b48,#ef6b62);box-shadow:0 0 14px #e2685c88}
+.stat.hunger .bar i{background:linear-gradient(90deg,#b97a35,#e0a45a)}
+.stat.thirst .bar i{background:linear-gradient(90deg,#3b8fc0,#6ec2ef)}
+.stat.stamina .bar i{background:linear-gradient(90deg,#5c9a4c,#9fdc79)}
+.stat .bar.low i{animation:lowPulse .9s ease-in-out infinite}
+@keyframes lowPulse{50%{filter:brightness(1.7)}}
+
+/* 昼夜拨盘 */
+.daydial{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dial-face{
+  position:relative;width:62px;height:62px;border-radius:50%;
+  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(8px);
+  display:grid;place-items:center;transition:background .8s;
+}
+.daydial.night .dial-face{background:rgba(8,12,28,.55)}
+.dial-face svg{display:none}
+.dial-ring{position:absolute;inset:0;border-radius:50%;pointer-events:none}
+.dial-ring i{
+  position:absolute;inset:5px;border-radius:50%;
+  border:3px solid transparent;
+  border-top-color:transparent;
+  background:none;
+}
+/* 用 conic-gradient 做环形进度，简单可靠 */
+.dial-face::before{
+  content:"";position:absolute;inset:3px;border-radius:50%;
+  background:conic-gradient(var(--amber) var(--p,0%), transparent 0);
+  -webkit-mask:radial-gradient(circle, transparent 62%, #000 63%);
+  mask:radial-gradient(circle, transparent 62%, #000 63%);
+  opacity:.85;
+}
+.dial-icon{font-size:24px;position:relative;z-index:1;filter:drop-shadow(0 0 10px #ffcf7a66)}
+.day-pips{display:flex;gap:4px;height:6px}
+.day-pips i{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 6px #f2b053aa;display:block}
+
+/* 物品栏（默认竖屏：右上竖排） */
+.inventory{
+  display:flex;flex-direction:column;gap:7px;margin-left:auto;
+}
+.slot{
+  width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:20px;
+  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(8px);
+  opacity:.28;filter:grayscale(1);transition:.35s;
+}
+.slot.got{opacity:1;filter:none;border-color:#f2b05388;box-shadow:0 0 16px #f2b05344}
+.slot.pop{animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.28)}100%{transform:scale(1)}}
+
+/* 准心提示（靠近可交互物） */
+.prompt{
+  position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) scale(.6);opacity:0;transition:.2s;
+}
+.prompt.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.prompt-ring{
+  display:block;width:64px;height:64px;border-radius:50%;
+  border:2px dashed rgba(255,255,255,.75);animation:spin 6s linear infinite;
+  box-shadow:0 0 22px #00000055 inset;
+}
+.prompt[data-kind="rock"] .prompt-ring{border-color:#b9c2c8aa}
+.prompt[data-kind="camp"] .prompt-ring{border-color:#f2b053aa;border-style:solid}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* 气泡提示 */
+.bubbles{position:fixed;left:50%;top:32%;transform:translateX(-50%);z-index:12;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bubble{
+  font-size:26px;opacity:0;transform:translateY(14px) scale(.7);transition:.35s cubic-bezier(.2,1.2,.3,1);
+  filter:drop-shadow(0 3px 6px #000a);
+}
+.bubble.show{opacity:1;transform:translateY(0) scale(1)}
+.bubble.warn{animation:warnShake .4s}
+
+/* 受击 */
+.hit-flash{
+  position:fixed;inset:0;pointer-events:none;z-index:11;opacity:0;
+  background:radial-gradient(circle, transparent 35%, rgba(200,40,30,.72) 100%);
+}
+.hit-flash.on{animation:hit .5s ease-out}
+@keyframes hit{0%{opacity:1}100%{opacity:0}}
+
+/* 夜晚暗角 */
+.vignette{
+  position:fixed;inset:0;pointer-events:none;z-index:6;opacity:0;transition:opacity 1.2s;
+  background:radial-gradient(circle at 50% 55%, transparent 22%, rgba(2,4,12,.92) 78%);
+}
+
+/* ============ 触控层 ============ */
+.controls{position:fixed;inset:0;z-index:20;pointer-events:none}
+.pedal{
+  position:absolute;left:max(18px,env(safe-area-inset-left));bottom:calc(24px + env(safe-area-inset-bottom));
+  width:138px;height:138px;pointer-events:auto;touch-action:none;
+}
+.pedal-base{
+  position:absolute;left:19px;top:19px;width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.10), rgba(255,255,255,.03) 65%, transparent 70%);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:inset 0 0 26px #00000066, 0 6px 20px #0005;
+}
+.pedal-knob{
+  position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;
+  background:linear-gradient(180deg,#f0e8d8,#c9bda6);
+  box-shadow:0 4px 14px #0008, inset 0 -3px 6px #0002;
+  transition:transform .08s linear;
+}
+.action-btn{
+  position:absolute;right:max(20px,env(safe-area-inset-right));bottom:calc(34px + env(safe-area-inset-bottom));
+  width:88px;height:88px;border-radius:50%;pointer-events:auto;border:2px solid rgba(255,255,255,.28);
+  background:radial-gradient(circle at 40% 35%, #ffe0a8, #e8a23c 60%, #b9721f);
+  box-shadow:0 8px 22px #0007, inset 0 2px 6px #fff6;
+  display:grid;place-items:center;font-size:34px;transition:transform .12s, box-shadow .25s, filter .25s;
+}
+.action-btn:active{transform:scale(.92)}
+.action-btn .act-icon{filter:drop-shadow(0 2px 3px #0006);line-height:1}
+.action-btn.ready{box-shadow:0 0 0 3px #f2b05355, 0 0 26px #f2b053aa, 0 8px 22px #0007;animation:readyPulse 1.6s ease-in-out infinite}
+@keyframes readyPulse{50%{box-shadow:0 0 0 7px #f2b05322, 0 0 34px #f2b053cc, 0 8px 22px #0007}}
+
+/* ============ 死亡 ============ */
+.gameover{
+  position:fixed;inset:0;z-index:40;display:grid;place-items:center;
+  background:radial-gradient(circle, rgba(30,4,4,.55), rgba(4,4,6,.94));
+  opacity:0;transition:opacity .9s;backdrop-filter:blur(3px);
+}
+.gameover.show{opacity:1}
+.gameover.hidden{display:none}
+.go-card{display:flex;flex-direction:column;align-items:center;gap:22px}
+.go-icon{font-size:74px;filter:drop-shadow(0 0 30px #e2685c66);animation:bob 3s ease-in-out infinite}
+.go-btn{
+  width:66px;height:66px;border-radius:50%;border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.08);color:var(--ink);font-size:28px;
+  display:grid;place-items:center;cursor:pointer;transition:.2s;
+}
+.go-btn:hover{background:rgba(255,255,255,.18);transform:rotate(180deg)}
+
+@keyframes warnShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ============ 横屏 / 桌面适配 ============ */
+@media (min-width:820px) and (min-height:560px){
+  .stats{width:250px}
+  .inventory{flex-direction:row;top:auto;bottom:26px;right:auto;left:50%;transform:translateX(-50%)}
+  .pedal{width:150px;height:150px}
+  .action-btn{width:96px;height:96px;font-size:38px}
+}
+/* ============ 横屏（主推形态） ============ */
+@media (orientation: landscape){
+
+  /* 状态条：左上角横向紧凑排布 */
+  .top{
+    top:max(8px,env(safe-area-inset-top));
+    left:max(10px,env(safe-area-inset-left));
+    right:max(10px,env(safe-area-inset-right));
+    align-items:flex-start;
+  }
+  .stats{
+    width:min(34vw,280px);
+    padding:8px 11px;
+    gap:5px;
+    border-radius:13px;
+  }
+  .stat{gap:6px}
+  .stat .bar{height:7px}
+  .stat.heart .bar{height:10px}
+
+  /* 右上：昼夜盘 + 物品栏横排 */
+  .daydial{position:absolute;top:0;right:0;flex-direction:row;align-items:center;gap:8px}
+  .dial-face{width:52px;height:52px}
+  .dial-icon{font-size:20px}
+  .day-pips{flex-direction:column;flex-wrap:wrap;max-height:26px;gap:3px}
+  .day-pips i{width:5px;height:5px}
+
+  .inventory{
+    flex-direction:row;gap:6px;
+    position:absolute;right:0;top:60px;
+  }
+  .slot{width:38px;height:38px;border-radius:11px;font-size:17px}
+
+  /* 准心略微上移，给下方按钮留空间 */
+  .prompt{top:44%}
+  .prompt-ring{width:54px;height:54px}
+
+  /* 气泡在中间偏上 */
+  .bubbles{top:24%}
+
+  /* 摇杆左、按钮右，尺寸略放大，拇指更好按 */
+  .pedal{
+    left:max(22px,env(safe-area-inset-left));
+    bottom:max(18px,env(safe-area-inset-bottom));
+    width:146px;height:146px;
+  }
+  .pedal-base{
+    left:21px;top:21px;width:104px;height:104px;
+    border-color:rgba(255,255,255,.26);
+  }
+  .pedal-knob{width:56px;height:56px;margin:-28px 0 0 -28px}
+
+  .action-btn{
+    right:max(26px,env(safe-area-inset-right));
+    bottom:max(26px,env(safe-area-inset-bottom));
+    width:96px;height:96px;font-size:38px;
+  }
+
+  /* 胶囊状的行动按钮提示位置 */
+  .act-icon{line-height:1}
+
+  /* 夜间暗角稍收一点，横屏视野本就更宽 */
+  .vignette{background:radial-gradient(circle at 50% 52%, transparent 26%, rgba(2,4,12,.9) 76%)}
+}
+
+/* 矮横屏（手机横屏常见 360~420 高度）再压缩一点 */
+@media (orientation: landscape) and (max-height: 430px){
+  .stats{width:min(30vw,230px);padding:6px 9px;gap:4px}
+  .stat .bar{height:6px}
+  .stat.heart .bar{height:8px}
+  .stat .icon{font-size:11px;width:12px}
+  .dial-face{width:46px;height:46px}
+  .dial-icon{font-size:18px}
+  .inventory{margin-right:0;top:54px;gap:5px}
+  .slot{width:33px;height:33px;border-radius:9px;font-size:15px}
+  .pedal{width:124px;height:124px;left:max(14px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))}
+  .pedal-base{left:17px;top:17px;width:90px;height:90px}
+  .pedal-knob{width:48px;height:48px;margin:-24px 0 0 -24px}
+  .action-btn{width:82px;height:82px;font-size:32px;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom))}
+  .prompt-ring{width:48px;height:48px}
+}
+
+@media (max-width:360px){
+  .stats{width:56vw;padding:8px 10px}
+  .dial-face{width:54px;height:54px}
+  .pedal{width:120px;height:120px}
+  .pedal-base{left:15px;top:15px;width:90px;height:90px}
+  .action-btn{width:78px;height:78px;font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important}
+}
+
+/* ============ 竖屏引导：请转到横屏 ============ */
+.rotate{
+  position:fixed;inset:0;z-index:60;display:none;place-items:center;
+  background:radial-gradient(circle at 50% 45%, #1a1408, #070a0c 70%);
+}
+@media (orientation: portrait) and (max-width: 820px){
+  .rotate{display:grid}
+}
+.rotate-card{display:flex;flex-direction:column;align-items:center;gap:30px}
+.phone{
+  width:76px;height:132px;border-radius:12px;border:3px solid rgba(255,255,255,.62);
+  display:grid;place-items:center;
+  animation:rotateHint 2.6s ease-in-out infinite;
+  box-shadow:0 0 40px #f2b05333;
+}
+.phone-screen{width:56px;height:98px;border-radius:6px;background:linear-gradient(170deg,#2b4a33,#101a13)}
+@keyframes rotateHint{
+  0%,32%{transform:rotate(0deg)}
+  60%,88%{transform:rotate(90deg)}
+  100%{transform:rotate(0deg)}
+}
+.rotate-hint span{
+  display:block;font-size:30px;color:var(--amber);
+  animation:spin 2.6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
