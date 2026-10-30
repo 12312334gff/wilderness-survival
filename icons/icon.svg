@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="sky" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="#1d2a22"/>
+      <stop offset="60%" stop-color="#0d1512"/>
+      <stop offset="100%" stop-color="#070a09"/>
+    </radialGradient>
+    <radialGradient id="fire" cx="50%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#ffd08a"/>
+      <stop offset="45%" stop-color="#ff8a3d"/>
+      <stop offset="100%" stop-color="#ff5a1d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#sky)"/>
+  <g fill="#ffffff" opacity=".7">
+    <circle cx="96" cy="92" r="2.6"/><circle cx="160" cy="60" r="1.8"/><circle cx="238" cy="104" r="2.2"/>
+    <circle cx="330" cy="70" r="1.6"/><circle cx="404" cy="112" r="2.4"/><circle cx="440" cy="60" r="1.7"/>
+    <circle cx="70" cy="170" r="1.6"/><circle cx="460" cy="180" r="1.9"/>
+  </g>
+  <circle cx="256" cy="330" r="170" fill="url(#fire)" opacity=".55"/>
+  <!-- 树 -->
+  <g fill="#16241c" stroke="#2a4032" stroke-width="6" stroke-linejoin="round">
+    <path d="M112 372 L74 262 L100 266 L84 200 L130 232 L124 178 L168 244 L160 288 L184 300 L150 372 Z"/>
+    <path d="M400 372 L362 274 L388 278 L372 210 L416 244 L412 192 L452 256 L446 296 L468 306 L436 372 Z"/>
+  </g>
+  <!-- 帐篷 -->
+  <path d="M256 214 L336 372 L176 372 Z" fill="#3a2a1c" stroke="#c98b46" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M256 250 L296 372 L216 372 Z" fill="#0b0f0d"/>
+  <!-- 火 -->
+  <path d="M256 330 C232 350 224 372 246 392 C252 398 268 398 276 390 C296 372 282 350 262 338 Z" fill="#ffb055"/>
+  <path d="M256 352 C246 362 244 376 254 384 C264 390 272 378 264 366 Z" fill="#fff0c8"/>
+  <ellipse cx="256" cy="398" rx="42" ry="9" fill="#1a120c"/>
+  <g stroke="#6b4a2a" stroke-width="9" stroke-linecap="round">
+    <path d="M212 396 L300 408"/><path d="M212 408 L300 396"/>
+  </g>
+</svg>
