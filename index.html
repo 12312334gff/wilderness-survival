@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0b0f0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏕️</text></svg>">
+<link rel="stylesheet" href="./css/style.css">
+<title>荒野余生 · 20 天</title>
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== 顶部 HUD ===== -->
+  <header id="hud" class="hidden">
+    <div class="hud-row hud-top">
+      <div class="brand">
+        <span class="brand-icon">🏕️</span>
+        <div>
+          <div class="brand-name">荒野余生</div>
+          <div class="brand-sub" id="hud-clock">第 1 天 · 06:00</div>
+        </div>
+      </div>
+      <div class="hud-weather" id="hud-weather" title="当地天气"><span class="wx-icon">☀️</span><span class="wx-name">晴朗</span></div>
+      <div class="hud-target">
+        <div class="target-num" id="hud-daynum">1<small>/20</small></div>
+        <div class="target-bar"><i id="hud-daybar"></i></div>
+        <div class="target-label">熬过今夜</div>
+      </div>
+    </div>
+
+    <div class="hud-vitals" id="hud-vitals"></div>
+
+    <div class="hud-res" id="hud-res"></div>
+
+    <div class="hud-row hud-actions">
+      <div class="energy-wrap">
+        <span class="energy-label">体力</span>
+        <div class="energy-bar"><i id="hud-energy"></i></div>
+        <span class="energy-num" id="hud-energy-num">100</span>
+      </div>
+      <div class="action-dots" id="hud-dots" title="今天的行动次数"></div>
+      <div class="know-wrap" title="知识：用于研究科技">
+        <span>📘</span><span id="hud-know">0</span>
+      </div>
+    </div>
+    <div class="hud-progress"><i id="hud-timebar"></i></div>
+  </header>
+
+  <!-- ===== 主界面 ===== -->
+  <main id="screen-play" class="screen hidden">
+    <section class="panel panel-log">
+      <div class="panel-head">
+        <h2>夜里发生的</h2>
+        <button class="mini-btn" id="btn-sound" title="音效开关">🔊</button>
+        <button class="mini-btn" id="btn-restart" title="重新开始">↻</button>
+      </div>
+      <div class="log" id="log"></div>
+    </section>
+
+    <section class="panel panel-collect">
+      <div class="panel-head"><h2>外出采集 <span class="sub-label">消耗体力 · 用掉 1 次行动</span></h2></div>
+      <div class="zones" id="zones"></div>
+    </section>
+
+    <section class="panel panel-tabs">
+      <div class="tabbar" id="tabbar">
+        <button class="tab active" data-tab="build">🏗️ 建造</button>
+        <button class="tab" data-tab="craft">🛠️ 制作</button>
+        <button class="tab" data-tab="tech">📘 科技</button>
+        <button class="tab" data-tab="camp">⛺ 营地</button>
+      </div>
+      <div class="tab-body" id="tab-body"></div>
+    </section>
+  </main>
+
+  <!-- ===== 雨/雾粒子层 ===== -->
+  <div id="fx" class="fx"></div>
+
+  <!-- ===== 弹窗层 ===== -->
+  <div id="modal-root"></div>
+
+  <div id="toasts" class="toasts"></div>
+</div>
+
+<script src="./js/data.js"></script>
+<script src="./js/game.js"></script>
+<script src="./js/audio.js"></script>
+<script src="./js/ui.js"></script>
+<script>
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+  }
+</script>
+</body>
+</html>
