@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b1114">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
+<link rel="stylesheet" href="./css/game.css">
+<title>荒野余生 · 3D 探索</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/": "./vendor/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<!-- 加载 -->
+<div id="loading" class="loading">
+  <div class="fire">🔥</div>
+  <h1>荒野余生</h1>
+  <p class="sub">正在生成岛屿…</p>
+</div>
+
+<!-- ============ HUD ============ -->
+<div id="hud" class="hud">
+  <!-- 顶部状态：纯图形，无文字 -->
+  <div class="top">
+    <div class="stats">
+      <div class="stat heart">
+        <div class="bar"><i id="st-energy"></i></div>
+      </div>
+      <div class="stat hunger">
+        <span class="icon">🍖</span>
+        <div class="bar"><i id="st-hunger"></i></div>
+      </div>
+      <div class="stat thirst">
+        <span class="icon">💧</span>
+        <div class="bar"><i id="st-thirst"></i></div>
+      </div>
+      <div class="stat stamina">
+        <span class="icon">⚡</span>
+        <div class="bar"><i id="st-stamina"></i></div>
+      </div>
+    </div>
+    <!-- 昼夜圆盘：图形表示，不写文字 -->
+    <div class="daydial" id="daydial">
+      <div class="dial-face">
+        <span class="dial-icon" id="dial-icon">☀️</span>
+      </div>
+      <div class="day-pips" id="day-pips"></div>
+    </div>
+    <!-- 物品栏（横屏时移到右上角，竖屏时在右侧竖排） -->
+    <div class="inventory" id="inventory">
+      <div class="slot" id="it-wood" title="木材"><span>🪵</span></div>
+      <div class="slot" id="it-stone" title="石料"><span>🪨</span></div>
+      <div class="slot" id="it-camp" title="营火"><span>🔥</span></div>
+    </div>
+  </div>
+
+  <!-- 准心提示 -->
+  <div class="prompt" id="prompt"><span class="prompt-ring"></span></div>
+
+  <!-- 气泡提示 -->
+  <div class="bubbles" id="bubbles"></div>
+
+  <!-- 受击红屏 -->
+  <div class="hit-flash" id="hitFlash"></div>
+
+  <!-- 夜晚暗角 -->
+  <div class="vignette" id="vignette"></div>
+</div>
+
+<!-- 触控层：虚拟摇杆 + 行动按钮（独立于 HUD，保证能点） -->
+<div class="controls" id="controls">
+  <div class="pedal" id="stick">
+    <div class="pedal-base"></div>
+    <div class="pedal-knob" id="knob"></div>
+  </div>
+  <button class="action-btn" id="btnAction" aria-label="行动">
+    <span class="act-icon">🪓</span>
+  </button>
+</div>
+
+<!-- 死亡 / 重来 -->
+<div id="gameover" class="gameover hidden">
+  <div class="go-card">
+    <div class="go-icon">💀</div>
+    <button class="go-btn" id="btnRestart">↻</button>
+  </div>
+</div>
+
+<!-- 横屏提示：竖屏时盖一层，引导转到横屏 -->
+<div id="rotate" class="rotate">
+  <div class="rotate-card">
+    <div class="phone">
+      <div class="phone-screen"></div>
+    </div>
+    <div class="rotate-hint">
+      <span>↻</span>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./js3d/overlay.js"></script>
+<script type="module" src="./js3d/main.js"></script>
+<script>
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+  }
+</script>
+</body>
+</html>
